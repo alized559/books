@@ -4,13 +4,17 @@ import styled from 'styled-components';
 const Home = () => {
   
   const [author, setAuthor] = useState(null);
-  const [books, setBooks] = useState(null);
+  const [books, setBooks] = useState([]);
 
   useEffect(() => {
     if (author !== null) {
       fetch("https://www.googleapis.com/books/v1/volumes?q=inauthor:" + author)
       .then((response) => response.json())
-      .then((data) => setBooks(data)); 
+      .then((data) => setBooks(data.items)); 
+    } else {
+      fetch("https://www.googleapis.com/books/v1/volumes?q=search+terms")
+      .then((response) => response.json())
+      .then((data) => setBooks(data.items)); 
     }
   }, [author]);
 
@@ -26,10 +30,10 @@ const Home = () => {
       <InputContainer>
         <Input type="text" placeholder="Search for an author..." onKeyDown={Submit} />
       </InputContainer>
-
-      <BooksContainer>
-
-      </BooksContainer>
+      
+      {books.map((book, key) =>
+        <img key={key} src={book.volumeInfo.imageLinks.thumbnail} alt="Book Image"/>
+      )}
     </div>
   );
 }
@@ -46,9 +50,9 @@ const Input = styled.input`
   font-size: 18px;
 `;
 
-const BooksContainer = styled.div`
-  display: flex;
-  flex-direction: row;
-`;
+// const BooksContainer = styled.div`
+//   display: flex;
+//   flex-direction: row;
+// `;
 
 export default Home;
