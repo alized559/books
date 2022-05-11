@@ -14,7 +14,7 @@
 ### On Mobile
 
 <div float="left">
-    <img src="./screenshots/mobile1.png" width="400" height="400"/>
+    <img src="./screenshots/mobile1.png" width="400" height="400" style="object-fit: center"/>
     <img src="./screenshots/mobile2.png" width="400" height="400"/>
     <img src="./screenshots/mobile3.png" width="400" height="400"/>
     <img src="./screenshots/mobile4.png" width="400" height="400"/>
