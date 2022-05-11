@@ -4,6 +4,7 @@ import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import { gapi } from 'gapi-script';
 import ClientId from './common/Client';
 import Home from './components/Home';
+import Book from './components/Book';
 
 const App = () => {
 
@@ -23,6 +24,7 @@ const App = () => {
       <Routes>
         <Route path="/" element={<Login />} />
         <Route path="/home" element={<Home />} />
+        <Route path="/book" element={<Book />} />
       </Routes>
     </Router>
   );
