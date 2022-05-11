@@ -144,6 +144,10 @@ const Input = styled.input`
   &:hover {
     background: #dcdcdc;
   }
+
+  @media only screen and (max-width: 400px) {
+    width: 300px;
+  }
 `;
 
 const BooksContainer = styled.div`

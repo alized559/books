@@ -58,7 +58,7 @@ const Book = () => {
               </p>
             </div>
           </RightSide>
-        </ViewerFlex> : 'Something went wrong, try again :('}
+        </ViewerFlex> : ''}
     </div>
   );
 };
