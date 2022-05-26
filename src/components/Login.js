@@ -6,7 +6,6 @@ import { useNavigate } from 'react-router-dom';
 
 const Login = () => {
 
-  const [error, setError] = useState(false);
   const navigate = useNavigate();
 
   function Submit() {
@@ -16,7 +15,7 @@ const Login = () => {
   return (
     <LoginContainer>
       <Title>Hello. Login using Google Account To Continue</Title>
-      <Submit error={error} navigate={navigate} />
+      <Submit navigate={navigate} />
       <GoogleLogin
         clientId={ClientId}
         onSuccess={Submit}

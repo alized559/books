@@ -17,7 +17,7 @@ const Book = () => {
     scriptTag.id = "google-script";
     document.body.appendChild(scriptTag);
     setBookId(location.state.bookId);
-  }, []);
+  }, [location.state.bookId]);
 
   // Create new instance of Default viewer and load book's information to viewer
   useEffect(() => {
@@ -35,7 +35,7 @@ const Book = () => {
             viewer.load(bookId);
           })
         }
-  }}, [loaded]);
+  }}, [loaded, bookId]);
 
   return (      
     <div style={{ marginTop: '20px' }}>
