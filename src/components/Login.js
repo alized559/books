@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import styled from 'styled-components';
 import { GoogleLogin } from 'react-google-login';
 import ClientId from '../common/Client';
