@@ -11,7 +11,7 @@ const Home = () => {
   
   const [author, setAuthor] = useState(null);
   const [books, setBooks] = useState([]);
-  const booksRef = useRef(null);
+  const ref = useRef(null);
   const navigate = useNavigate();
 
   // Scroll to Books After Search
@@ -23,9 +23,9 @@ const Home = () => {
     if (author !== null) {
       fetch("https://www.googleapis.com/books/v1/volumes?q=inauthor:" + author + "&filter=free-ebooks&orderBy=newest")
       .then((response) => response.json())
-      .then((data) => setBooks(data.items)); 
+      .then((data) => setBooks(data.items));
     } else {
-      fetch("https://www.googleapis.com/books/v1/volumes?q=search+terms&filter=free-ebooks&orderBy=newest")
+      fetch("https://www.googleapis.com/books/v1/volumes?q=search+terms&filter=free-ebooks&orderBy=newest&maxResults=40")
       .then((response) => response.json())
       .then((data) => setBooks(data.items));
     }
@@ -36,7 +36,8 @@ const Home = () => {
     if (event.key === 'Enter') {
       event.preventDefault();
       setAuthor(event.target.value);
-      scroll(booksRef);
+      event.target.value = "";
+      scroll(ref);
     }
   }
 
@@ -65,32 +66,35 @@ const Home = () => {
         </InputContainer>
       </BackgroundContainer>
       
-      <BooksContainer ref={booksRef}>
-        {books.map((book, key) =>
-          <Book key={key}>
-            <Link to="/book" state={{ bookId: book.id, title: book.volumeInfo.title, authors: book.volumeInfo.authors,
-              pageCount: book.volumeInfo.pageCount, publisher: book.volumeInfo.publisher, language: book.volumeInfo.language,
-              pdfLink: book.accessInfo.pdf.acsTokenLink, epubLink: book.accessInfo.epub.acsTokenLink }}>
-              <BookImage src={book.volumeInfo.imageLinks.thumbnail} alt="Book Image"/>
-            </Link>
-            <BookDetail>{book.volumeInfo.publisher}</BookDetail>
-            <BookDetail>Released: {book.volumeInfo.publishedDate}</BookDetail>
-            {book.volumeInfo.authors
-              ? <BookDetail>Authors: <br/> {book.volumeInfo.authors}</BookDetail>
-              : ''}
-            <BookDetail>
-              {book.volumeInfo.ratingsCount
-              ? <>Ratings: {book.volumeInfo.ratingsCount}</>
-              : <>Ratings: 0</>}
-            </BookDetail>
-            <BookDetail>
-              <StarRatings rating={book.volumeInfo.averageRating} starRatedColor="gold" starDimension="20px"
-                numberOfStars={5} name='rating'
-              />
-            </BookDetail>
-          </Book>
-        )}
-      </BooksContainer>
+      {
+        undefined !== books && books.length > 0
+        ? <BooksContainer ref={ref}>
+            {books?.map((book, key) =>
+              <Book key={key}>
+                <Link to="/book" state={{ bookId: book.id, title: book.volumeInfo.title, authors: book.volumeInfo.authors,
+                  pageCount: book.volumeInfo.pageCount, publisher: book.volumeInfo.publisher, language: book.volumeInfo.language,
+                  pdfLink: book.accessInfo.pdf.acsTokenLink, epubLink: book.accessInfo.epub.acsTokenLink }}>
+                  <BookImage src={book.volumeInfo.imageLinks.thumbnail} alt="Book Image"/>
+                </Link>
+                <BookDetail>{book.volumeInfo.publisher}</BookDetail>
+                <BookDetail>Released: {book.volumeInfo.publishedDate}</BookDetail>
+                {book.volumeInfo.authors
+                  ? <BookDetail>Authors: <br/> {book.volumeInfo.authors}</BookDetail>
+                  : ''}
+                <BookDetail>
+                  {book.volumeInfo.ratingsCount
+                  ? <>Ratings: {book.volumeInfo.ratingsCount}</>
+                  : <>Ratings: 0</>}
+                </BookDetail>
+                <BookDetail>
+                  <StarRatings rating={book.volumeInfo.averageRating} starRatedColor="gold" starDimension="20px"
+                    numberOfStars={5} name='rating'
+                  />
+                </BookDetail>
+              </Book>
+            )}
+          </BooksContainer>
+        : <NoResult ref={ref}>No Books Found</NoResult>}
     </div>
   );
 }
@@ -160,7 +164,7 @@ const BooksContainer = styled.div`
 
 const Book = styled.div`
   border: 1px solid;
-  height: 100%;
+  height: 450px;
   margin: 0 30px 30px 30px;
   padding: 0 10px 0 10px;
 `;
@@ -171,9 +175,19 @@ const BookImage = styled.img`
   object-fit: cover;
 `;
 
-const BookDetail = styled.p`
+const BookDetail = styled.div`
   max-width: 200px;
   font-size: 14px;
+  margin-bottom: 15px;
+`;
+
+const NoResult = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 750px;
+  font-size: 24px;
+  font-weight: bold;
 `;
 
 export default Home;
