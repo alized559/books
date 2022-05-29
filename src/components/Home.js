@@ -21,7 +21,7 @@ const Home = () => {
 
   useEffect(() => {
     if (author !== null) {
-      fetch("https://www.googleapis.com/books/v1/volumes?q=inauthor:" + author + "&filter=free-ebooks&orderBy=newest")
+      fetch("https://www.googleapis.com/books/v1/volumes?q=inauthor:" + author + "&filter=free-ebooks&orderBy=newest&maxResults=40")
       .then((response) => response.json())
       .then((data) => setBooks(data.items));
     } else {

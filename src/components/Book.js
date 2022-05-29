@@ -24,22 +24,23 @@ const Book = () => {
     if (!loaded) {
       return;
     } else {
-        if (window.viewer) {
-          let viewer = new window.google.books.DefaultViewer(canvasRef.current); 
+      if (window.viewer) {
+        let viewer = new window.google.books.DefaultViewer(canvasRef.current); 
+        viewer.load(bookId);
+      } else {
+        window.google.books.load()
+        window.google.books.setOnLoadCallback(() => {
+          let viewer = new window.google.books.DefaultViewer(canvasRef.current);
+          window.viewer = viewer
           viewer.load(bookId);
-        } else {
-          window.google.books.load()
-          window.google.books.setOnLoadCallback(() => {
-            let viewer = new window.google.books.DefaultViewer(canvasRef.current);
-            window.viewer = viewer
-            viewer.load(bookId);
-          })
-        }
-  }}, [loaded, bookId]);
+        });
+      }
+    }
+  }, [loaded, bookId]);
 
   return (      
     <div style={{ marginTop: '20px' }}>
-      {loaded ?             
+      {loaded ?
         <ViewerFlex> 
           <ViewerCanvas ref={canvasRef} id="viewerCanvas"></ViewerCanvas>
           <RightSide>
